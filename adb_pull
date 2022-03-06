@@ -1,0 +1,41 @@
+import os
+from time import sleep
+
+# swipe up forever
+while True:
+	command = 'adb shell input swipe 900 300 900 1500 50'
+	os.system(command)
+
+start = int(input('start from number(int): '))
+end = int(input('to number(int): '))
+sleep_time = float(input('swipe, wait 1? seconds(float), screencap: '))
+sleep(int(input('specific delay (in seconds) to start (int): ')))
+
+for i in range(start, end+1):
+	
+	# determine the path and filename at phone
+	filename = '/sdcard/Download/' + str(i) + '.png'
+	
+	# take screencap on phone and save there
+	command1 = 'adb shell screencap -p ' + filename
+	print('screencap no. ' + str(i) + ' completed')
+
+	# get the saved screencap from phone to computer
+	command2 = 'adb pull ' + filename
+	
+	# swipe Whatsapp to view newer messages
+	# Google PIXEL: swipe from 800,1000 to 800,550, i.e. 450pixels up in 120ms
+	# ZTE Blade V7: swipe from 800,1000 to 800,525, i.e. 475pixels up in 120ms
+  # Samsung A12: swipe from 350,1200 to 350,850, i.e. 350pixels up in 120ms
+	
+	command3 = 'adb shell input swipe 350 1200 350 850 120'
+	
+	# wait the phone to load thumbnails clearly
+	command4 = 'adb shell sleep ' + str(sleep_time)
+
+	# run the commands
+	os.system(command1)
+	os.system(command2)
+	os.system(command3)
+	os.system(command4)
+	
